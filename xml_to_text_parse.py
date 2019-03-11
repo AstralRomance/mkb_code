@@ -25,7 +25,7 @@ class xml_parse:
 
     def xml_to_text(self):
         os.chdir(self.res_dir)
-        res_f = open('res_text.txt', 'w')           
+        res_f = open('res_text.txt', 'w')
         for trees in self.trees_list:
             tr = trees.getroot()
             for i in tr:
