@@ -4,12 +4,12 @@ import os
 class xml_parse:
     def __init__(self, given_path, xml_list):
         self.mem_list = xml_list
-        self.res_dir = given_path + '\\res_text'
+        self.res_dir = given_path
         self.trees_list = []
         self.id_list = []
         self.name_list = []
         try:
-            os.mkdir(self.res_dir)
+            os.mkdir(self.res_dir+'\\res_text')
         except OSError:
             pass
 
@@ -18,15 +18,19 @@ class xml_parse:
             self.get_xml_info(files)
 
     def get_xml_info(self, xml_input):
+        print('ok 1')
+        print(self.res_dir)
+        print(os.getcwd())
         tree = xml.parse(xml_input)
         self.trees_list.append(tree)
-        for roots in self.trees_list:
-            roots = roots.getroot()
+        self.xml_to_text(xml_input)
 
-    def xml_to_text(self):
-        os.chdir(self.res_dir)
-        res_f = open('res_text.txt', 'w')
+    def xml_to_text(self, fname):
+        os.chdir(self.res_dir + '\\res_text')
+        filename = fname[:-3]
+        res_f = open(filename + 'txt', 'w')
         for trees in self.trees_list:
+            tr = None
             tr = trees.getroot()
             for i in tr:
                 for j in i:
@@ -42,6 +46,9 @@ class xml_parse:
                                 continue
                             else:
                                 res_f.write(strs)
+                                print(strs)
+                                #input()
                     res_f.write('\r')
                 res_f.write('\r')
-
+        res_f.close()
+        os.chdir(self.res_dir + '\\members\\')

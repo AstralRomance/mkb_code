@@ -16,7 +16,7 @@ for i in files_list:
 os.chdir(path+'\\members')
 prs = xml_parse(path, xml_list)
 prs.get_file_list()
-prs.xml_to_text()
+
 
 # Парсинг pdf в txt
 pdf_prs = pdf_parser(path, pdf_list)

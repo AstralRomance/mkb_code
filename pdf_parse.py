@@ -10,7 +10,6 @@ class pdf_parser:
         for i, j in enumerate(self.pdf_res):
             self.pdf_res[i] = j.replace('pdf', 'xml')
 
-
     def make_xml_from_pdf(self):
         current_path = self.res_dir + '\\members\\'
         target_path = self.res_dir + '\\xml_temp\\'
@@ -18,41 +17,33 @@ class pdf_parser:
             current_path += self.pdf_list[i]
             target_path += self.pdf_res[i]
             os.system('pdf2txt.py -o {0} {1}'.format(target_path, current_path))
+            current_path = self.res_dir + '\\members\\'
+            target_path = self.res_dir + '\\xml_temp\\'
         self.parse_temp_xml()
 
     def parse_temp_xml(self):
         files_list = os.listdir(path=self.res_dir+'\\xml_temp\\')
-        print('files list')
-        print(files_list)
         for files in files_list:
-            self.make_mkb_text(files)
+            self.make_pdf_trees(files)
 
-    def make_mkb_text(self, file_to_parse):
-        print(file_to_parse)
-        curr_dir = self.res_dir + '\\xml_temp\\' + file_to_parse
-        tree = xml.parse(curr_dir)
+    def make_pdf_trees(self, file_to_parse):
+        os.chdir(self.res_dir + '\\xml_temp\\')
+        tree = xml.parse(file_to_parse)
         self.trees_list.append(tree)
-        for roots in self.trees_list:
-            roots = roots.getroot()
+        self.make_pdf_text()
 
-    def make_text_from_pdf(self):
-        os.chdir(self.res_dir)
-        res_f = open('res_text_from_pdf.txt', 'w')
+    def make_pdf_text(self):
+        os.chdir(self.res_dir + '\\pdf_text_res\\')
+        res_f = open('res_pdf.txt', 'w')
         for trees in self.trees_list:
             tr = trees.getroot()
             for i in tr:
                 for j in i:
                     for k in j:
-                        k.text = k.text[0::] + ' '
-                        l = k.text.split('\r')
-                        while 'Да/Нет' in l:
-                            l.remove('Да/Нет')
-                        while '\r\n' in l:
-                            l.remove('\r\n')
-                        for strs in l:
-                            if strs == ' ':
+                        for h in k:
+                            if h.text is None:
                                 continue
                             else:
-                                res_f.write(strs)
-                    res_f.write('\r')
-                res_f.write('\r')
+                                res_f.write(h.text)
+        res_f.close()
+
