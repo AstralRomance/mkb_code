@@ -18,9 +18,6 @@ class xml_parse:
             self.get_xml_info(files)
 
     def get_xml_info(self, xml_input):
-        print('ok 1')
-        print(self.res_dir)
-        print(os.getcwd())
         tree = xml.parse(xml_input)
         self.trees_list.append(tree)
         self.xml_to_text(xml_input)
@@ -47,7 +44,6 @@ class xml_parse:
                             else:
                                 res_f.write(strs)
                                 print(strs)
-                                #input()
                     res_f.write('\r')
                 res_f.write('\r')
         res_f.close()
