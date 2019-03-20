@@ -40,15 +40,12 @@ class xls_parser:
             templist = []
         #Формируем список для записи в excel
         for i, headers in enumerate(temp):
-            #print(headers)
             finded_info.append(self.get_uniq_code(headers))
             finded_info.append(self.get_mkb_code(headers))
             finded_info.append(self.get_header_text(headers))
             finded_info.append(self.criteria[i])
             self.cells_info.append(finded_info)
             finded_info = []
-        #print(self.cells_info)
-        #print(self.writing_list)
 
     def get_mkb_code(self, header):
         temp = ''
@@ -87,16 +84,15 @@ class xls_parser:
 
     def create_xls(self):
         wb = xlwt.Workbook()
-        ws = wb.add_sheet('Критерии')
+        ws = wb.add_sheet('Критерии', True)
         t = 0
         for i, row in enumerate(self.cells_info):
             for j, column in enumerate(self.cells_info[i]):
                 ws.write(i, j, self.cells_info[i][j])
-                n = j
-                for h in self.cells_info[i][3]:
-                    print(h)
-                    #ws.write(i, n, h)
-                    #n += 1
+            n = j
+            for h in self.cells_info[i][3]:
+                ws.write(i, n, h)
+                n += 1
 
         wb.save(self.dir + '\\res\\criteria.xls')
         print('PARSING IS DONE')
