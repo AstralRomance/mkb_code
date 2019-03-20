@@ -13,22 +13,15 @@ class xml_parse:
         except OSError:
             pass
 
-    def get_file_list(self):
-        for files in self.mem_list:
-            self.get_xml_info(files)
-
-    def get_xml_info(self, xml_input):
-        tree = xml.parse(xml_input)
-        self.trees_list.append(tree)
-        self.xml_to_text(xml_input)
-
-    def xml_to_text(self, fname):
-        os.chdir(self.res_dir + '\\res_text')
-        filename = fname[:-3]
-        res_f = open(filename + 'txt', 'w')
-        for trees in self.trees_list:
-            tr = None
-            tr = trees.getroot()
+    def xml_to_text_parse(self):
+        os.chdir(self.res_dir + '\\res_text\\')
+        for cfile in self.mem_list:
+            tree = xml.parse(cfile)
+            temp = cfile.split('\\')
+            filename = temp[-1]
+            filename = filename[:-3]
+            res_f = open(filename + 'txt', 'w')
+            tr = tree.getroot()
             for i in tr:
                 for j in i:
                     for k in j:
@@ -43,8 +36,5 @@ class xml_parse:
                                 continue
                             else:
                                 res_f.write(strs)
-                                print(strs)
-                    res_f.write('\r')
-                res_f.write('\r')
-        res_f.close()
-        os.chdir(self.res_dir + '\\members\\')
+                    res_f.write('\n')
+            res_f.close()
