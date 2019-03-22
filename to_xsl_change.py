@@ -38,7 +38,6 @@ class xls_parser:
                 templist.append(i)
             self.criteria.append(templist)
             templist = []
-        #Формируем список для записи в excel
         for i, headers in enumerate(temp):
             finded_info.append(self.get_uniq_code(headers))
             finded_info.append(self.get_mkb_code(headers))
@@ -86,13 +85,22 @@ class xls_parser:
         wb = xlwt.Workbook()
         ws = wb.add_sheet('Критерии', True)
         t = 0
+        row_count = 0
         for i, row in enumerate(self.cells_info):
-            for j, column in enumerate(self.cells_info[i]):
-                ws.write(i, j, self.cells_info[i][j])
-            n = j
-            for h in self.cells_info[i][3]:
-                ws.write(i, n, h)
-                n += 1
+            for j in range(len(self.cells_info[i])-1):
+                ws.write(row_count, j, self.cells_info[i][j])
+            for k in self.cells_info[i][3]:
+                temp = k.split(' ')
+                code = temp[0]
+                crit_text = ''
+                for words in temp[1:]:
+                    crit_text += words + ' '
+                ws.write(row_count, j+1, code)
+                ws.write(row_count, j+2, crit_text)
+
+                row_count += 1
+
 
         wb.save(self.dir + '\\res\\criteria.xls')
         print('PARSING IS DONE')
+

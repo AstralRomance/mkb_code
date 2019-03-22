@@ -11,8 +11,10 @@ files_list = os.listdir(path=path+'\\members\\')
 for i in files_list:
     if 'xml' in i:
         xml_list.append(path + '\\members\\' + i)
+        print('xml list')
     elif 'pdf' in i:
         pdf_list.append(path + '\\members\\' + i)
+        print('pdf list')
     else:
         continue
 # Парсинг xml в txt
@@ -28,4 +30,3 @@ print('PARSED FROM XML AND PDF SOURCES')
 xlsprs = xls_parser(path)
 xlsprs.make_info()
 xlsprs.create_xls()
-

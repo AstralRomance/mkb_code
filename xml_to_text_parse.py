@@ -15,6 +15,7 @@ class xml_parse:
 
     def xml_to_text_parse(self):
         os.chdir(self.res_dir + '\\res_text\\')
+        print('OK')
         for cfile in self.mem_list:
             tree = xml.parse(cfile)
             temp = cfile.split('\\')
